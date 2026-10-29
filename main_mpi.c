@@ -79,6 +79,8 @@ int main(int argc, char *argv[]){
         }
     } 
 
+    MPI_Barrier(MPI_COMM_WORLD);
+    double start = MPI_Wtime();
 
     for (int step = 0; step < steps; step++){
 
@@ -103,6 +105,14 @@ int main(int argc, char *argv[]){
         unsigned char *temp = current;
         current = next;
         next = temp;
+    }
+
+    double elapsed = MPI_Wtime() - start;
+    double max_elapsed = 0.0;
+    MPI_Reduce(&elapsed, &max_elapsed, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+
+    if (rank == 0){
+        printf("N = %d | size = %d | steps = %d | max_time = %.6f s\n", N, size, steps, max_elapsed);
     }
 
     unsigned char *global = NULL;
