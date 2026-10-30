@@ -2,9 +2,10 @@ import csv
 from statistics import median
 import matplotlib.pyplot as plt 
 
-N = 600
-steps = 200
-mode = 1
+with open("config.h") as f:
+    definitions = [line.split() for line in f if line.startswith("#define DEFAULT_")]
+config = {name: int(value) for _, name, value in definitions}
+N, steps, mode = (config[k] for k in ("DEFAULT_N", "DEFAULT_STEPS", "DEFAULT_MODE"))
 
 with open(f"reports/benchmark_N{N}_steps{steps}_mode{mode}.csv",newline = "") as f:
     rows = list(csv.DictReader(f))

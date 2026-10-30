@@ -1,7 +1,7 @@
 #!/bin/bash
-N=600
-steps=200 
-mode=1
+N=$(awk '$2 == "DEFAULT_N" {print $3}' config.h)
+steps=$(awk '$2 == "DEFAULT_STEPS" {print $3}' config.h)
+mode=$(awk '$2 == "DEFAULT_MODE" {print $3}' config.h)
 
 echo "processes,run,time_s" > ./reports/benchmark_N${N}_steps${steps}_mode${mode}.csv
 

@@ -1,3 +1,3 @@
-#define DEFAULT_N 120
-#define DEFAULT_STEPS 30
+#define DEFAULT_N 480
+#define DEFAULT_STEPS 10
 #define DEFAULT_MODE 1 
