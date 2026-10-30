@@ -3,24 +3,7 @@
 #include <mpi.h>
 
 #include "config.h"
-
-unsigned char evolve_cell(const unsigned char *grid, int N, int row, int col){
-        int neighbors = 0;
-
-        for (int dr = -1; dr <= 1; dr++){
-            for (int dc = -1; dc <= 1; dc++){
-                if (dr == 0 && dc == 0) continue;
-
-                int nr = row + dr;
-                int nc = (col + dc + N) % N;
-
-                neighbors += grid[nr * N + nc];
-            }
-        }
-
-        unsigned char alive = grid[row * N + col];
-        return (neighbors == 3 || (alive && neighbors == 2));
-    }
+#include "conway.h"
 
 
 int main(int argc, char *argv[]){
@@ -112,7 +95,7 @@ int main(int argc, char *argv[]){
     MPI_Reduce(&elapsed, &max_elapsed, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
     if (rank == 0){
-        printf("N = %d | size = %d | steps = %d | max_time = %.6f s\n", N, size, steps, max_elapsed);
+        printf("N = %d | steps = %d | mode = %d | np = %d | max_time = %.6f s\n", N, steps, mode, size ,max_elapsed);
     }
 
     unsigned char *global = NULL;
